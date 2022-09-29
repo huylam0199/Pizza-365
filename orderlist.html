@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Data Table-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+    <title>Order List</title>
+</head>
+<body>
+    <div class = "container-fluid p-5"> 
+        <div class = "col-12 text-center">
+            <h2 class = "display-4"> Danh sách người dùng đăng ký </h2>
+        </div>
+        <div class = 'col-sm-12 mb-3'>
+            <button class  = "btn btn-success" id = "btn-add-user"> Add user</button>
+        </div> 
+
+        <!-- Table Area -->
+        <div> 
+            <table class = "table table-bordered table-striped table-hover" id="order-table"> 
+                <thead class = "thead-dark">
+                    <th> Order Id</th>
+                    <th> Kích cỡ combo</th>
+                    <th> Loại Pizza</th>
+                    <th> Nước uống</th>
+                    <th> Thành tiền</th>
+                    <th> Họ và tên</th>
+                    <th> Số điện thoại</th>
+                    <th> Trạng thái</th>
+                    <th> Chi tiết</th>
+                </thead> 
+            </table>
+        </div>
+        <!-- End Table Area -->
+</body>
+<script> 
+'use strict'
+$(document).ready(function() {
+     /*** REGION 1 - Global variables - Vùng khai báo biến, hằng số, tham số TOÀN CỤC */
+    const gNameCol = ["orderId", "kichCo", "loaiPizza", "idLoaiNuocUong", "thanhTien", "hoTen", "soDienThoai", 'trangThai', 'chiTiet']
+    const gORDER_ID_COL = 0; 
+    const gKICH_CO = 1; 
+    const gLOAI_PIZZA_COL = 2; 
+    const gLOAI_NUOC_UONG_COL = 3; 
+    const gTHANH_TIEN_COL = 4; 
+    const gHO_TEN_COL = 5; 
+    const gSO_DIEN_THOAI_COL = 6; 
+    const gTRANG_THAI_COL = 7; 
+    const gCHI_TIET_COL = 8; 
+    
+    var gOrderTable = $("#order-table").DataTable({
+        columns: [
+            {data : gNameCol[gORDER_ID_COL]}, 
+            {data : gNameCol[gKICH_CO]}, 
+            {data : gNameCol[gLOAI_PIZZA_COL]}, 
+            {data : gNameCol[gLOAI_NUOC_UONG_COL]}, 
+            {data : gNameCol[gTHANH_TIEN_COL]}, 
+            {data : gNameCol[gHO_TEN_COL]}, 
+            {data : gNameCol[gSO_DIEN_THOAI_COL]}, 
+            {data : gNameCol[gTRANG_THAI_COL]}, 
+            {data : gNameCol[gCHI_TIET_COL]}, 
+        ],
+        columnDefs: [ 
+            {
+            targets: gCHI_TIET_COL,
+            defaultContent: "<button class = 'btn btn-primary'> Chi tiết </button>",
+            }
+        ]
+    })
+
+/*** REGION 3 - Event handlers - Vùng khai báo các hàm xử lý sự kiện */
+callApiLoadAllOrderDetails ()
+
+/*** REGION 4 - Common funtions - Vùng khai báo hàm dùng chung trong toàn bộ chương trình*/
+        
+    /** load voucher array to DataTable
+     * in: voucher array
+     * out: voucher table has data
+     */  
+    // Add data từ từ param obj vào table
+    function insertDataToTable(paramDataObj) { 
+        'use strict'; 
+        var vTable = $("#order-table").DataTable();
+        vTable.clear();
+        vTable.rows.add(paramDataObj);
+        vTable.draw();
+    }
+
+
+    // call api get order details
+    function callApiLoadAllOrderDetails () {
+        'use strict'
+        const vBASE_URL = "http://42.115.221.44:8080/devcamp-pizza365/orders";
+        $.ajax({
+            url: vBASE_URL,
+            method: "GET", 
+            contentType: "json",
+            success: function(res) { 
+                console.log(res)
+                insertDataToTable(res);
+            },
+            error: function(resAjax)  {
+                console.log(resAjax.responseText);
+            } 
+        })
+    }
+})
+</script>
+</html>

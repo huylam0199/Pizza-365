@@ -1,0 +1,32 @@
+.navbar-color {
+    background-color: orange;       
+}
+
+.button-combo-color {
+    background-color: orange;   
+    border-color: orange;    
+    color: black;
+}
+
+.button-type-color {
+    background-color: orange;   
+    border-color: orange;    
+    color: black;
+}
+
+.content-quality {
+    background-color: yellow;
+}
+
+.content-diverse {
+    background-color: lightgoldenrodyellow;
+}
+
+.content-flavor {
+    background-color: lightsalmon;
+}
+
+.content-service {
+    background-color: orange;
+}
+
